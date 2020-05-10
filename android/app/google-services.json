@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "207627964466",
+    "firebase_url": "https://multicast-131eb.firebaseio.com",
+    "project_id": "multicast-131eb",
+    "storage_bucket": "multicast-131eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207627964466:android:c2530bb3254ecdc9616c2b",
+        "android_client_info": {
+          "package_name": "com.example.multicast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207627964466-cnj9n63of0jhblkf18qk0jh3mfe4rbcp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.multicast",
+            "certificate_hash": "7938530c456e7b7cfa02baf6aaed7c9636fe4412"
+          }
+        },
+        {
+          "client_id": "207627964466-mjr5hjvd6jqv5d98616jh6sg8d41pfr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYEiqCEeE2K8qnRmiJXizNSSMpmqnxHPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207627964466-mjr5hjvd6jqv5d98616jh6sg8d41pfr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
