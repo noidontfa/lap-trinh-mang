@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".GroupView_Activity"></activity>
+        <activity
+            android:name=".GroupView_Activity"
+            android:label="@string/title_activity_group_view"
+            android:theme="@style/NoActionBar"></activity>
         <activity android:name=".SignUp_Activity" />
         <activity android:name=".SignIn_Activity" />
         <activity android:name=".MainActivity">
