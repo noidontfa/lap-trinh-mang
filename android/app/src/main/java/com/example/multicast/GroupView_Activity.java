@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -24,7 +27,9 @@ public class GroupView_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_view_);
+        setContentView(R.layout.activity_group_view);
+
+        getSupportActionBar().show();
 
         AnhXa();
         groupChatAdapter = new GroupChatAdapter(this, R.layout.line_group_chat, groupChatArrayList);
@@ -44,11 +49,36 @@ public class GroupView_Activity extends AppCompatActivity {
                 if(groupChatArrayList.get(position).isState() == false){
                     ConfirmJoinGroup(position);
                 }else {
-                    Toast.makeText(GroupView_Activity.this, "You joined this group!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GroupView_Activity.this, "You joined the group!", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_group_view, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuJoinGroup:
+                Toast.makeText(GroupView_Activity.this, "Joined group.", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menuExit:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(GroupView_Activity.this, MainActivity.class));
+                Toast.makeText(GroupView_Activity.this, "You signed out.", Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void ConfirmJoinGroup(final int position){

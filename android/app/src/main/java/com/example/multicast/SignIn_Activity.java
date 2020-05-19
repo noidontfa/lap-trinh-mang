@@ -28,12 +28,16 @@ public class SignIn_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_sign_in_);
         tvToSignUp = (TextView)findViewById(R.id.tvToSignUp);
         btnSignIn=(Button)findViewById(R.id.btnSignIn);
         s4_email=(EditText)findViewById(R.id.txtUserId);
         s5_password=(EditText)findViewById(R.id.txtPassId);
         mAuth = FirebaseAuth.getInstance();
+
+        mAuth.signOut();
+
         dialog=new ProgressDialog(this);
 
         tvToSignUp.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +55,8 @@ public class SignIn_Activity extends AppCompatActivity {
             }
         });
     }
+
+
 
     protected void signInUser(){
         dialog.setMessage("Signing in. Please wait.");

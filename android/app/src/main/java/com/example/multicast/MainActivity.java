@@ -11,11 +11,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView btnSignin, btnSignUp;
+    private View btnSignin, btnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null){
             startActivity(new Intent(MainActivity.this,GroupView_Activity.class));
@@ -24,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
         }
 
-        btnSignin = (TextView)findViewById(R.id.tvSignI);
-        btnSignUp = (TextView)findViewById(R.id.tvSignU);
+        btnSignin = (View) findViewById(R.id.viewLogin);
+        btnSignUp = (View) findViewById(R.id.viewRegister);
 
         btnSignin.setOnClickListener(new View.OnClickListener() {
             @Override
