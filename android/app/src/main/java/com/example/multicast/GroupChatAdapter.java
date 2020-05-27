@@ -24,7 +24,6 @@ public class GroupChatAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        //So item muon tra ve ( tra ve tat ca cac phan tu trong groupChatList )
         return groupChatList.size();
     }
 
@@ -50,7 +49,6 @@ public class GroupChatAdapter extends BaseAdapter {
 
 
         if(convertView==null){
-
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout, null);
             holder = new ViewHolder();

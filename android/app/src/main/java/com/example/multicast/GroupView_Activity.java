@@ -3,18 +3,25 @@ package com.example.multicast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -23,6 +30,7 @@ public class GroupView_Activity extends AppCompatActivity {
     ListView lvGroupChat;
     ArrayList<GroupChat> groupChatArrayList;
     GroupChatAdapter groupChatAdapter;
+    String textname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +39,8 @@ public class GroupView_Activity extends AppCompatActivity {
 
         getSupportActionBar().show();
 
-        AnhXa();
+        lvGroupChat = (ListView) findViewById(R.id.listviewGroupChat);
+        groupChatArrayList = new ArrayList<>();
         groupChatAdapter = new GroupChatAdapter(this, R.layout.line_group_chat, groupChatArrayList);
         lvGroupChat.setAdapter(groupChatAdapter);
 
@@ -66,8 +75,8 @@ public class GroupView_Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menuJoinGroup:
-                Toast.makeText(GroupView_Activity.this, "Joined group.", Toast.LENGTH_SHORT).show();
+            case R.id.menuCreGroup:
+                DialogCreateGroup();
                 break;
             case R.id.menuExit:
                 FirebaseAuth.getInstance().signOut();
@@ -76,9 +85,45 @@ public class GroupView_Activity extends AppCompatActivity {
                 finish();
                 break;
         }
-
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void DialogCreateGroup(){
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_create_group);
+
+        final EditText edtNameGroup = (EditText) dialog.findViewById(R.id.editTextNameGroup);
+        Button btnOk = (Button) dialog.findViewById(R.id.buttonOk);
+        Button btnCancel = (Button) dialog.findViewById(R.id.buttonCancel);
+
+        //set size of dialog
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        dialog.getWindow().setLayout((6 * width)/7, (2 * height)/5);
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edtNameGroup.getText().toString().equals("")){
+                    Toast.makeText(GroupView_Activity.this, "your name group be empty", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(GroupView_Activity.this, "You created a new group", Toast.LENGTH_SHORT).show();
+                    textname = edtNameGroup.getText().toString();
+                    addNewGroup(groupChatArrayList, textname);
+                }
+                dialog.dismiss();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     private void ConfirmJoinGroup(final int position){
@@ -111,19 +156,7 @@ public class GroupView_Activity extends AppCompatActivity {
         alert.show();
     }
 
-    private void AnhXa() {
-        lvGroupChat = (ListView) findViewById(R.id.listviewGroupChat);
-        groupChatArrayList = new ArrayList<>();
-
-        groupChatArrayList.add(new GroupChat("Nhom 1", "this is Nhom 1", false, R.drawable.ic_group_black_24dp));
-        groupChatArrayList.add(new GroupChat("Nhom 2", "this is Nhom 2", false, R.drawable.ic_group_black_24dp));
-        groupChatArrayList.add(new GroupChat("Nhom 3", "this is Nhom 3", false, R.drawable.ic_group_black_24dp));
-        groupChatArrayList.add(new GroupChat("Nhom 4", "this is Nhom 4", false, R.drawable.ic_group_black_24dp));
-        groupChatArrayList.add(new GroupChat("Nhom 5", "this is Nhom 5", false, R.drawable.ic_group_black_24dp));
-        groupChatArrayList.add(new GroupChat("Nhom 6", "this is Nhom 6", false, R.drawable.ic_group_black_24dp));
-        groupChatArrayList.add(new GroupChat("Nhom 7", "this is Nhom 7", false, R.drawable.ic_group_black_24dp));
-        groupChatArrayList.add(new GroupChat("Nhom 8", "this is Nhom 8", false, R.drawable.ic_group_black_24dp));
-        groupChatArrayList.add(new GroupChat("Nhom 9", "this is Nhom 9", false, R.drawable.ic_group_black_24dp));
-
+    private void addNewGroup(ArrayList<GroupChat> List,String nameGroup) {
+        List.add(new GroupChat(nameGroup, "this is group: "+nameGroup, false, R.drawable.ic_group_black_24dp));
     }
 }

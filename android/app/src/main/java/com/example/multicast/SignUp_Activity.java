@@ -17,6 +17,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class SignUp_Activity extends AppCompatActivity {
     private TextView tvToSignIn;
@@ -24,6 +28,9 @@ public class SignUp_Activity extends AppCompatActivity {
     private EditText s1_email, s2_password, s3_username;
     private FirebaseAuth mAuth;
     ProgressDialog dialog;
+    User userCurrent;
+    private DatabaseReference mData;
+    ArrayList<User> userArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,8 @@ public class SignUp_Activity extends AppCompatActivity {
         btnSignUp=(Button)findViewById(R.id.btnSignUp);
         mAuth = FirebaseAuth.getInstance();
         dialog = new ProgressDialog(this);
+
+        userArrayList = new ArrayList<User>();
 
         tvToSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +79,8 @@ public class SignUp_Activity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 dialog.hide();
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                userCurrent = new User(user.getUid(),s2_password.getText().toString(),user.getEmail(),R.drawable.ic_person_black_24dp);
+                                userArrayList.add(userCurrent);
                                 updateUI(user);
                                 finish();
                             } else{
@@ -82,8 +93,18 @@ public class SignUp_Activity extends AppCompatActivity {
         }
     }
 
+    private void writeNewUser(){
+//        mData = FirebaseDatabase.getInstance().getReference();
+//        mData.child(s1_email.getText().toString()).setValue(userCurrent);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+
+        myRef.child(s3_username.getText().toString()).setValue(userCurrent);
+    }
+
     protected void updateUI(FirebaseUser account){
         if(account != null){
+            writeNewUser();
             Toast.makeText(this,"You Signed up successfully",Toast.LENGTH_LONG).show();
             startActivity(new Intent(SignUp_Activity.this,SignIn_Activity.class));
         }else {
