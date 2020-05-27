@@ -24,23 +24,25 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
         }
 
-        btnSignin = (TextView)findViewById(R.id.tvSignI);
-        btnSignUp = (TextView)findViewById(R.id.tvSignU);
+//        btnSignin = (TextView)findViewById(R.id.tvSignI);
+//        btnSignUp = (TextView)findViewById(R.id.tvSignU);
+//
+//        btnSignin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(MainActivity.this, SignIn_Activity.class);
+//                startActivity(i);
+//            }
+//        });
+//
+//        btnSignUp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(MainActivity.this, SignUp_Activity.class);
+//                startActivity(i);
+//            }
+//        });
 
-        btnSignin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, SignIn_Activity.class);
-                startActivity(i);
-            }
-        });
-
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, SignUp_Activity.class);
-                startActivity(i);
-            }
-        });
     }
+
 }

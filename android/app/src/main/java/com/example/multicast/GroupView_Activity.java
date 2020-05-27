@@ -6,14 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.multicast.model.GroupModel;
+import com.example.multicast.model.UserGroupModel;
+import com.example.multicast.model.UserModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class GroupView_Activity extends AppCompatActivity {
 
@@ -49,6 +58,8 @@ public class GroupView_Activity extends AppCompatActivity {
                 return false;
             }
         });
+
+
     }
 
     private void ConfirmJoinGroup(final int position){
@@ -95,5 +106,79 @@ public class GroupView_Activity extends AppCompatActivity {
         groupChatArrayList.add(new GroupChat("Nhom 8", "this is Nhom 8", false, R.drawable.ic_group_black_24dp));
         groupChatArrayList.add(new GroupChat("Nhom 9", "this is Nhom 9", false, R.drawable.ic_group_black_24dp));
 
+
+//        CoreAPI core = CoreAPI.getInstance();
+//        UserModel userModel = new UserModel(UUID.randomUUID().toString(),"User 1","username1","123456");
+//        UserModel userModel2 = new UserModel(UUID.randomUUID().toString(),"User 2","username2","123456");
+//        UserModel userModel3 = new UserModel(UUID.randomUUID().toString(),"User 3","username3","123456");
+//        UserModel userModel4 = new UserModel(UUID.randomUUID().toString(),"User 4","username4","123456");
+//        UserModel userModel5 = new UserModel(UUID.randomUUID().toString(),"User 5","username5","123456");
+//
+//        core.writeDataUser(userModel).writeDataUser(userModel2).writeDataUser(userModel3).writeDataUser(userModel4)
+//                .writeDataUser(userModel5);
+//
+
+        // login api - find by username;
+        final String username = "username1";
+        Query query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("username").equalTo(username);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               Map<String,UserModel> map = (Map<String, UserModel>)dataSnapshot.getValue();
+                if(map != null) {
+                    Log.d("TAG", "onDataChange: Login Success");
+                } else {
+                    Log.d("TAG", "onDataChange: Failed");
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("TAG", "onDataChange: " + databaseError.getMessage());
+            }
+        });
+
+
+        // findAllGroups
+        FirebaseDatabase.getInstance().getReference().child("groups").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String,GroupModel> map = (Map<String, GroupModel>)dataSnapshot.getValue();
+                if(map != null) {
+                    Log.d("TAG", "onDataChange: has group model");
+                } else {
+                    Log.d("TAG", "onDataChange: Failed");
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("TAG", "onDataChange: " + databaseError.getMessage());
+            }
+        });
+
+                    // findGroupUserByUserId
+        final String userId="f808116a-49df-473c-8421-380420a0e99d"; // user 1
+        FirebaseDatabase.getInstance().getReference().child("user_group_ref").orderByChild("userId").equalTo(userId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, UserGroupModel> map = (Map<String, UserGroupModel>) dataSnapshot.getValue();
+                        if (map != null) {
+                            Log.d("TAG", "onDataChange: has list group id user"); // so sanh voi list group bang dau de xac nhan group nao da dc user join !?
+                        } else {
+                            Log.d("TAG", "onDataChange: Failed");
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d("TAG", "onDataChange: " + databaseError.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }
