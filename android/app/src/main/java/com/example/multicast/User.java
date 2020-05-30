@@ -1,49 +1,49 @@
 package com.example.multicast;
 
 public class User {
-    private String idUser, passwordUser, emailUser;
-    private int imageUser;
+    private String id, name,  password, username;
 
     public User(){
         //Mac dinh cua firebase, khi nhan data
     }
 
-    public User(String idUser, String passwordUser, String emailUser, int imageUser) {
-        this.idUser = idUser;
-        this.passwordUser = passwordUser;
-        this.emailUser = emailUser;
-        this.imageUser = imageUser;
+    public String getId() {
+        return id;
     }
 
-    public String getIdUser() {
-        return idUser;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public String getName() {
+        return name;
     }
 
-    public String getPasswordUser() {
-        return passwordUser;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPasswordUser(String passwordUser) {
-        this.passwordUser = passwordUser;
+    public String getPassword() {
+        return password;
     }
 
-    public String getEmailUser() {
-        return emailUser;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setEmailUser(String emailUser) {
-        this.emailUser = emailUser;
+    public String getUsername() {
+        return username;
     }
 
-    public int getImageUser() {
-        return imageUser;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setImageUser(int imageUser) {
-        this.imageUser = imageUser;
+
+    public User(String id, String name, String password, String username) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.username = username;
     }
 }

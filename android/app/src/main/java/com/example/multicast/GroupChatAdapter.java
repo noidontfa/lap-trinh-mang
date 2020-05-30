@@ -15,6 +15,15 @@ public class GroupChatAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private List<GroupChat> groupChatList;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public GroupChatAdapter(Context context, int layout, List<GroupChat> groupChatList) {
         this.context = context;
@@ -39,14 +48,13 @@ public class GroupChatAdapter extends BaseAdapter {
 
     private class ViewHolder{
         ImageView imgImage;
-        TextView txtName, txtDescrip;
+        TextView txtName, txtDescrip, tvStatus;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-
 
         if(convertView==null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,6 +65,7 @@ public class GroupChatAdapter extends BaseAdapter {
             holder.txtName = (TextView) convertView.findViewById(R.id.textviewName);
             holder.txtDescrip = (TextView) convertView.findViewById(R.id.textviewDescrip);
             holder.imgImage = (ImageView) convertView.findViewById(R.id.imageviewImage);
+            holder.tvStatus = (TextView) convertView.findViewById(R.id.tvStatus);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -66,8 +75,14 @@ public class GroupChatAdapter extends BaseAdapter {
         GroupChat groupChat = groupChatList.get(position);
 
         holder.txtName.setText(groupChat.getName());
-        holder.txtDescrip.setText(groupChat.getDescription());
-        holder.imgImage.setImageResource(groupChat.getImage());
+        holder.txtDescrip.setText(groupChat.getIp());
+        holder.imgImage.setImageResource(R.drawable.ic_group_black_24dp);
+        if(isStatus() == true){
+            holder.tvStatus.setText("joined");
+        }else {
+            holder.tvStatus.setVisibility(View.GONE);
+        }
+
 
         return convertView;
     }

@@ -79,7 +79,7 @@ public class SignUp_Activity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 dialog.hide();
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                userCurrent = new User(user.getUid(),s2_password.getText().toString(),user.getEmail(),R.drawable.ic_person_black_24dp);
+                                userCurrent = new User(user.getUid(), s3_username.getText().toString(), s2_password.getText().toString(), s1_email.getText().toString());
                                 userArrayList.add(userCurrent);
                                 updateUI(user);
                                 finish();
@@ -94,12 +94,10 @@ public class SignUp_Activity extends AppCompatActivity {
     }
 
     private void writeNewUser(){
-//        mData = FirebaseDatabase.getInstance().getReference();
-//        mData.child(s1_email.getText().toString()).setValue(userCurrent);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
+        DatabaseReference myRef = database.getReference("users");
 
-        myRef.child(s3_username.getText().toString()).setValue(userCurrent);
+        myRef.child(userCurrent.getId()).setValue(userCurrent);
     }
 
     protected void updateUI(FirebaseUser account){

@@ -1,6 +1,7 @@
 package com.example.multicast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -10,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,40 +35,187 @@ public class GroupView_Activity extends AppCompatActivity {
 
     ListView lvGroupChat;
     ArrayList<GroupChat> groupChatArrayList;
+    ArrayList<UserGroup> userGroupArrayList;
     GroupChatAdapter groupChatAdapter;
     String textname;
+    FirebaseUser userCurrent;
+    UserGroup userGroup;
+    GroupChat groupChat;
+    String groupid;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_view);
-
         getSupportActionBar().show();
 
-        lvGroupChat = (ListView) findViewById(R.id.listviewGroupChat);
+        userCurrent = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        lvGroupChat = findViewById(R.id.listviewGroupChat);
         groupChatArrayList = new ArrayList<>();
+        userGroupArrayList = new ArrayList<>();
         groupChatAdapter = new GroupChatAdapter(this, R.layout.line_group_chat, groupChatArrayList);
         lvGroupChat.setAdapter(groupChatAdapter);
 
-        lvGroupChat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mDatabase.child("user_group_ref").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(GroupView_Activity.this, "start activity chat group!", Toast.LENGTH_SHORT).show();
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                UserGroup usergroup = dataSnapshot.getValue(UserGroup.class);
+                userGroupArrayList.add(new UserGroup(usergroup.getGroupid(), usergroup.getUserid()));
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
-
-        lvGroupChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        mDatabase.child("groups").addChildEventListener(new ChildEventListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                if(groupChatArrayList.get(position).isState() == false){
-                    ConfirmJoinGroup(position);
-                }else {
-                    Toast.makeText(GroupView_Activity.this, "You joined the group!", Toast.LENGTH_SHORT).show();
-                }
-                return false;
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    GroupChat group = dataSnapshot.getValue(GroupChat.class);
+
+//                    groupChatAdapter.setStatus(false);
+                    for(int i=0; i<userGroupArrayList.size(); i++){
+                        if(userGroupArrayList.get(i).getUserid() == userCurrent.getUid()) {
+                            if (userGroupArrayList.get(i).getGroupid() == group.getId()) {
+                                groupChatAdapter.setStatus(true);
+                                groupChatAdapter.notifyDataSetChanged();
+                                Toast.makeText(GroupView_Activity.this, "Success", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                    groupChatArrayList.add(new GroupChat(group.getId(), group.getIp(), group.getName()));
+                    groupChatAdapter.notifyDataSetChanged();
+//                    for(int i=0; i<userGroupArrayList.size(); i++){
+//                        if(userGroupArrayList.get(i).getUserid() == userCurrent.getUid()) {
+//                            if (userGroupArrayList.get(i).getGroupid() == group.getId()) {
+//                                groupChatAdapter.setStatus(true);
+//                                groupChatAdapter.notifyDataSetChanged();
+//                            } else {
+//                                groupChatAdapter.setStatus(false);
+//                                groupChatAdapter.notifyDataSetChanged();
+//                            }
+//                        }
+//                    }
+
+
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
+//        lvGroupChat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//                mDatabase.child("user_group_ref").addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                        userGroup = dataSnapshot.getValue(UserGroup.class);
+//                        if(userGroup.getUserid() == userCurrent.getUid()){
+//                            if(userGroup.getGroupid() == groupChatArrayList.get(position).getId()){
+//                                Toast.makeText(GroupView_Activity.this, "start activity chat group!", Toast.LENGTH_SHORT).show();
+//                            } else{
+//                                Toast.makeText(GroupView_Activity.this, "You don't join the group.", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }else {
+//
+//                        }
+//                        groupChatAdapter.notifyDataSetChanged();
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        });
+//
+//
+//        lvGroupChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+//                mDatabase.child("user_group_ref").addChildEventListener(new ChildEventListener() {
+//                        @Override
+//                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                            userGroup = dataSnapshot.getValue(UserGroup.class);
+//                            if(userGroup.getUserid() == userCurrent.getUid()){
+//                                if(userGroup.getGroupid() == groupChatArrayList.get(position).getId()){
+//                                    Toast.makeText(GroupView_Activity.this, "You joined the group!", Toast.LENGTH_SHORT).show();
+//                                    groupChatAdapter.JoinGroup(true);
+//                                } else{
+//                                    ConfirmJoinGroup(position);
+//                                }
+//                            }
+//                            groupChatAdapter.notifyDataSetChanged();
+//                        }
+//
+//                    @Override
+//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//
+//                return false;
+//            }
+//        });
     }
 
     @Override
@@ -110,7 +263,11 @@ public class GroupView_Activity extends AppCompatActivity {
                 }else {
                     Toast.makeText(GroupView_Activity.this, "You created a new group", Toast.LENGTH_SHORT).show();
                     textname = edtNameGroup.getText().toString();
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    groupid = mDatabase.push().getKey();
                     addNewGroup(groupChatArrayList, textname);
+                    mDatabase = FirebaseDatabase.getInstance().getReference("user_group_ref");
+                    mDatabase.child(groupChat.getId()).setValue(new UserGroup(userCurrent.getUid(), groupChat.getId()));
                 }
                 dialog.dismiss();
             }
@@ -135,9 +292,10 @@ public class GroupView_Activity extends AppCompatActivity {
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing but close the dialog
-                groupChatArrayList.get(position).setState(true);
                 Toast.makeText(GroupView_Activity.this, "Already join group!", Toast.LENGTH_SHORT).show();
+                mDatabase = FirebaseDatabase.getInstance().getReference("user_group_ref");
+                mDatabase.child(mDatabase.push().getKey()).setValue(new UserGroup(groupChatArrayList.get(position).getId(), userCurrent.getUid()));
+                groupChatAdapter.setStatus(true);
                 dialog.dismiss();
             }
         });
@@ -146,8 +304,8 @@ public class GroupView_Activity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                groupChatAdapter.setStatus(false);
                 Toast.makeText(GroupView_Activity.this, "You are not join group!", Toast.LENGTH_SHORT).show();
-                // Do nothing
                 dialog.dismiss();
             }
         });
@@ -157,6 +315,9 @@ public class GroupView_Activity extends AppCompatActivity {
     }
 
     private void addNewGroup(ArrayList<GroupChat> List,String nameGroup) {
-        List.add(new GroupChat(nameGroup, "this is group: "+nameGroup, false, R.drawable.ic_group_black_24dp));
+        groupChat = new GroupChat(groupid, "this is ip", nameGroup);
+        List.add(groupChat);
+        mDatabase = FirebaseDatabase.getInstance().getReference("groups");
+        mDatabase.child(groupid).setValue(groupChat);
     }
 }
