@@ -5,7 +5,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,14 +17,20 @@ import android.widget.Toast;
 import com.example.multicast.model.GroupModel;
 import com.example.multicast.model.UserGroupModel;
 import com.example.multicast.model.UserModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class GroupView_Activity extends AppCompatActivity {
 
@@ -35,34 +43,85 @@ public class GroupView_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_view);
 
-        AnhXa();
-        groupChatAdapter = new GroupChatAdapter(this, R.layout.line_group_chat, groupChatArrayList);
-        lvGroupChat.setAdapter(groupChatAdapter);
-
-        lvGroupChat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(GroupView_Activity.this, "start activity chat group!", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        AnhXa();
+        onRenderGroupChat();
 
 
-        lvGroupChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                if(groupChatArrayList.get(position).isState() == false){
-                    ConfirmJoinGroup(position);
-                }else {
-                    Toast.makeText(GroupView_Activity.this, "You joined this group!", Toast.LENGTH_SHORT).show();
-                }
-                return false;
-            }
-        });
+//        groupChatAdapter = new GroupChatAdapter(this, R.layout.line_group_chat, groupChatArrayList);
+//        lvGroupChat.setAdapter(groupChatAdapter);
+//
+//        lvGroupChat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(GroupView_Activity.this, "start activity chat group!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//
+//        lvGroupChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+//                if(groupChatArrayList.get(position).isState() == false){
+//                    ConfirmJoinGroup(position);
+//                }else {
+//                    Toast.makeText(GroupView_Activity.this, "You joined this group!", Toast.LENGTH_SHORT).show();
+//                }
+//                return false;
+//            }
+//        });
 
 
     }
 
-    private void ConfirmJoinGroup(final int position){
+    private void onRenderGroupChat() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase.getInstance().getReference().child("groups").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String,GroupModel> map = (Map<String, GroupModel>)dataSnapshot.getValue();
+                if(map != null) {
+                    final List<GroupModel> groups = new ArrayList<>(map.values());
+                    groupChatAdapter = new GroupChatAdapter(GroupView_Activity.this,R.layout.line_group_chat, groups);
+                    lvGroupChat = (ListView) findViewById(R.id.listviewGroupChat);
+                    lvGroupChat.setAdapter(groupChatAdapter);
+                    lvGroupChat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            GroupModel groupModel = new GroupModel((HashMap<String, String>) ((Object)groups.get(position)));
+                            if(!groupModel.isJoined) {
+                                Intent intent = new Intent(GroupView_Activity.this,ConversationActivity.class);
+                                intent.putExtra("data",groupModel);
+                                startActivity(intent);
+                            }
+                            Toast.makeText(GroupView_Activity.this, "start activity chat group!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    lvGroupChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                            GroupModel groupModel = new GroupModel((HashMap<String, String>) ((Object)groups.get(position)));
+                            if(groupModel.isJoined == false){
+                                ConfirmJoinGroup(groupModel);
+                            }else {
+                                Toast.makeText(GroupView_Activity.this, "You joined this group!", Toast.LENGTH_SHORT).show();
+                            }
+                            return false;
+                        }
+                    });
+
+                } else {
+                    Log.d("TAG", "onDataChange: Failed");
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("TAG", "onDataChange: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    private void ConfirmJoinGroup(final GroupModel groupModel){
         AlertDialog.Builder builder = new AlertDialog.Builder(GroupView_Activity.this);
 
         builder.setTitle("Confirm join group");
@@ -72,7 +131,7 @@ public class GroupView_Activity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
-                groupChatArrayList.get(position).setState(true);
+                groupModel.isJoined = true;
                 Toast.makeText(GroupView_Activity.this, "Already join group!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }

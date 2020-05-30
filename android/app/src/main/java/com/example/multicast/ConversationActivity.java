@@ -26,6 +26,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.multicast.model.GroupModel;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -58,6 +60,10 @@ public class ConversationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
+        Intent intent = getIntent();
+        GroupModel groupModel = (GroupModel) intent.getParcelableExtra("data");
+        this.INET_ADDR = groupModel.ip;
+        this.mId = groupModel.id;
         runThread();
 
         WifiManager wifi = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -116,6 +122,9 @@ public class ConversationActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        Log.d("TAG", "onCreate: ");
     }
 
     @Override

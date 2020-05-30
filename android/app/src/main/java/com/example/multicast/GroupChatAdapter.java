@@ -8,15 +8,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.multicast.model.GroupModel;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GroupChatAdapter extends BaseAdapter {
 
     private Context context;
     private int layout;
-    private List<GroupChat> groupChatList;
+    private List<GroupModel> groupChatList;
 
-    public GroupChatAdapter(Context context, int layout, List<GroupChat> groupChatList) {
+    public GroupChatAdapter(Context context, int layout, List<GroupModel> groupChatList) {
         this.context = context;
         this.layout = layout;
         this.groupChatList = groupChatList;
@@ -65,11 +70,11 @@ public class GroupChatAdapter extends BaseAdapter {
         }
 
         //gan gia tri
-        GroupChat groupChat = groupChatList.get(position);
-
-        holder.txtName.setText(groupChat.getName());
-        holder.txtDescrip.setText(groupChat.getDescription());
-        holder.imgImage.setImageResource(groupChat.getImage());
+        Object groupChat = groupChatList.get(position);
+        GroupModel groupModel = new GroupModel((HashMap<String, String>) groupChat);
+        holder.txtName.setText(groupModel.name);
+        holder.txtDescrip.setText(groupModel.ip);
+//        holder.imgImage.setImageResource(groupChat.getImage());
 
         return convertView;
     }
