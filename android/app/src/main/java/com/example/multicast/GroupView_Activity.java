@@ -141,7 +141,7 @@ public class GroupView_Activity extends AppCompatActivity {
                        Intent intent = new Intent(GroupView_Activity.this, ConversationActivity.class);
                        intent.putExtra("GROUP_IP", group.getIp());
                        intent.putExtra("USER_ID", userCurrent.getUid());
-                       intent.putExtra("USER_NAME", userCurrent.getEmail());
+                       intent.putExtra("USER_NAME", userCurrent.getDisplayName());
                        startActivity(intent);
                     }
                 });

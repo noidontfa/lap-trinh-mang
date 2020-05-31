@@ -16,64 +16,73 @@
         android:textStyle="bold"
         android:background="#000000"/>
 
-    <TextView
-        android:id="@+id/tvnameGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvlogoCre"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginLeft="42dp"
-        android:layout_marginTop="5dp"
-        android:text="Name's Group:"
-        android:textColor="#000000"
-        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/editTextNameGroup"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvnameGroup"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginRight="31dp"
+        android:layout_below="@+id/tvlogoCre"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/rectangle_2"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:hint="Enter your name group"
+        android:inputType="textPersonName"
+        android:padding="10dp" />
 
-    <Button
-        android:id="@+id/buttonOk"
-        android:layout_width="100dp"
+    <EditText
+        android:id="@+id/editTextIpGroup"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextNameGroup"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/rectangle_1"
-        android:text="ok"
-        android:textColor="#ffffff" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rectangle_2"
+        android:ems="10"
+        android:hint="Enter your ip group"
+        android:inputType="textPersonName"
+        android:padding="10dp" />
 
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="100dp"
+    <LinearLayout
+        android:id="@+id/layoutButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextNameGroup"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
+        android:layout_below="@+id/editTextIpGroup"
         android:layout_marginTop="10dp"
-        android:background="@drawable/rectangle_1"
-        android:text="Cancel"
-        android:textColor="#ffffff" />
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <View
+            android:layout_weight="2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_weight="2"
+            android:id="@+id/buttonOk"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_1"
+            android:text="ok"
+            android:textColor="#ffffff" />
+        <View
+            android:layout_weight="2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_weight="2"
+            android:id="@+id/buttonCancel"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_1"
+            android:text="Cancel"
+            android:textColor="#ffffff" />
+        <View
+            android:layout_weight="2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -81,6 +83,12 @@ public class SignUp_Activity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 userCurrent = new User(user.getUid(), s3_username.getText().toString(), s2_password.getText().toString(), s1_email.getText().toString());
                                 userArrayList.add(userCurrent);
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(s3_username.getText().toString())
+                                        .build();
+                                user.updateProfile(profileUpdates);
+
                                 updateUI(user);
                                 finish();
                             } else{
