@@ -63,9 +63,16 @@ public class ConversationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
         Intent intent = getIntent();
-        GroupModel groupModel = (GroupModel) intent.getParcelableExtra("data");
-        this.INET_ADDR = groupModel.ip;
-        this.mId = groupModel.id;
+        String groupIp = intent.getStringExtra("GROUP_IP");
+        String name = intent.getStringExtra("USER_NAME");
+        String uid = intent.getStringExtra("USER_ID");
+        this.INET_ADDR = groupIp;
+        this.mName = name;
+        this.mId = uid;
+        Log.d(TAG, "onCreate: " +groupIp);
+        Log.d(TAG, "onCreate: " + name);
+        Log.d(TAG, "onCreate: " + uid);
+
 
         runThread();
 

@@ -71,7 +71,7 @@ public class GroupView_Activity extends AppCompatActivity {
     }
 
     private void onRenderGroupChat() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         FirebaseDatabase.getInstance().getReference().child("groups").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -85,9 +85,12 @@ public class GroupView_Activity extends AppCompatActivity {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             GroupModel groupModel = new GroupModel((HashMap<String, String>) ((Object)groups.get(position)));
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if(!groupModel.isJoined) {
                                 Intent intent = new Intent(GroupView_Activity.this,ConversationActivity.class);
-                                intent.putExtra("data",groupModel);
+                                intent.putExtra("GROUP_IP",groupModel.ip);
+                                intent.putExtra("USER_ID",user.getUid());
+                                intent.putExtra("USER_NAME",user.getEmail());
                                 startActivity(intent);
                             }
                             Toast.makeText(GroupView_Activity.this, "start activity chat group!", Toast.LENGTH_SHORT).show();
