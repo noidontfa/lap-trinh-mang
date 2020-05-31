@@ -146,91 +146,91 @@ public class GroupView_Activity extends AppCompatActivity {
             }
         });
 
-//        lvGroupChat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-//                mDatabase.child("user_group_ref").addChildEventListener(new ChildEventListener() {
-//                    @Override
-//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                        userGroup = dataSnapshot.getValue(UserGroup.class);
-//                        if(userGroup.getUserid() == userCurrent.getUid()){
-//                            if(userGroup.getGroupid() == groupChatArrayList.get(position).getId()){
-//                                Toast.makeText(GroupView_Activity.this, "start activity chat group!", Toast.LENGTH_SHORT).show();
-//                            } else{
-//                                Toast.makeText(GroupView_Activity.this, "You don't join the group.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }else {
-//
-//                        }
-//                        groupChatAdapter.notifyDataSetChanged();
-//                    }
-//
-//                    @Override
-//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-//            }
-//        });
-//
-//
-//        lvGroupChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-//                mDatabase.child("user_group_ref").addChildEventListener(new ChildEventListener() {
-//                        @Override
-//                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                            userGroup = dataSnapshot.getValue(UserGroup.class);
-//                            if(userGroup.getUserid() == userCurrent.getUid()){
-//                                if(userGroup.getGroupid() == groupChatArrayList.get(position).getId()){
-//                                    Toast.makeText(GroupView_Activity.this, "You joined the group!", Toast.LENGTH_SHORT).show();
-//                                    groupChatAdapter.JoinGroup(true);
-//                                } else{
-//                                    ConfirmJoinGroup(position);
-//                                }
-//                            }
-//                            groupChatAdapter.notifyDataSetChanged();
-//                        }
-//
-//                    @Override
-//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-//
-//                return false;
-//            }
-//        });
+        lvGroupChat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                mDatabase.child("user_group_ref").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        userGroup = dataSnapshot.getValue(UserGroup.class);
+                        if(userGroup.getUserid() == userCurrent.getUid()){
+                            if(userGroup.getGroupid() == groupChatArrayList.get(position).getId()){
+                                Toast.makeText(GroupView_Activity.this, "start activity chat group!", Toast.LENGTH_SHORT).show();
+                            } else{
+                                Toast.makeText(GroupView_Activity.this, "You don't join the group.", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+
+                        }
+                        groupChatAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+
+        lvGroupChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                mDatabase.child("user_group_ref").addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            userGroup = dataSnapshot.getValue(UserGroup.class);
+                            if(userGroup.getUserid() == userCurrent.getUid()){
+                                if(userGroup.getGroupid() == groupChatArrayList.get(position).getId()){
+                                    Toast.makeText(GroupView_Activity.this, "You joined the group!", Toast.LENGTH_SHORT).show();
+                                    groupChatAdapter.setStatus(true);
+                                } else{
+                                    ConfirmJoinGroup(position);
+                                }
+                            }
+                            groupChatAdapter.notifyDataSetChanged();
+                        }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                return false;
+            }
+        });
     }
 
     @Override
