@@ -10,16 +10,20 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +33,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.example.multicast.model.GroupModel;
+import com.example.multicast.model.UserGroupModel;
+import com.example.multicast.model.UserModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class GroupView_Activity extends AppCompatActivity {
 
@@ -48,6 +62,7 @@ public class GroupView_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_view);
+
         getSupportActionBar().show();
 
         userCurrent = FirebaseAuth.getInstance().getCurrentUser();
@@ -281,6 +296,7 @@ public class GroupView_Activity extends AppCompatActivity {
         });
 
         dialog.show();
+
     }
 
     private void ConfirmJoinGroup(final int position){
@@ -319,5 +335,26 @@ public class GroupView_Activity extends AppCompatActivity {
         List.add(groupChat);
         mDatabase = FirebaseDatabase.getInstance().getReference("groups");
         mDatabase.child(groupid).setValue(groupChat);
+
+
+
+
+//        CoreAPI core = CoreAPI.getInstance();
+//        UserModel userModel = new UserModel(UUID.randomUUID().toString(),"User 1","username1","123456");
+//        UserModel userModel2 = new UserModel(UUID.randomUUID().toString(),"User 2","username2","123456");
+//        UserModel userModel3 = new UserModel(UUID.randomUUID().toString(),"User 3","username3","123456");
+//        UserModel userModel4 = new UserModel(UUID.randomUUID().toString(),"User 4","username4","123456");
+//        UserModel userModel5 = new UserModel(UUID.randomUUID().toString(),"User 5","username5","123456");
+//
+//        core.writeDataUser(userModel).writeDataUser(userModel2).writeDataUser(userModel3).writeDataUser(userModel4)
+//                .writeDataUser(userModel5);
+//
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }

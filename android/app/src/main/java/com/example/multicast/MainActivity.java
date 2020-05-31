@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
         }
 
+
         btnSignin = (View) findViewById(R.id.viewLogin);
         btnSignUp = (View) findViewById(R.id.viewRegister);
 
@@ -44,5 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
     }
+
 }
