@@ -49,7 +49,7 @@ public class ConversationActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ChatAdapter adapter;
     private ArrayList<Message> messages;
-    private String INET_ADDR = "224.0.0.3";
+    private String INET_ADDR = "";
     private int PORT = 8888;
     private EditText edt;
     private Button button;
@@ -153,6 +153,7 @@ public class ConversationActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            finish();
             return true;
         }
 
