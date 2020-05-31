@@ -62,6 +62,7 @@ public class GroupView_Activity extends AppCompatActivity {
     ArrayList<UserGroup> userGroupArrayList;
     GroupChatAdapter groupChatAdapter;
     String textname;
+    String textip;
     FirebaseUser userCurrent;
     UserGroup userGroup;
     GroupChat groupChat;
@@ -113,15 +114,15 @@ public class GroupView_Activity extends AppCompatActivity {
                     final GroupChat group = dataSnapshot.getValue(GroupChat.class);
 
 //                    groupChatAdapter.setStatus(false);
-                    for(int i=0; i<userGroupArrayList.size(); i++){
-                        if(userGroupArrayList.get(i).getUserid() == userCurrent.getUid()) {
-                            if (userGroupArrayList.get(i).getGroupid() == group.getId()) {
-                                groupChatAdapter.setStatus(true);
-                                groupChatAdapter.notifyDataSetChanged();
-                                Toast.makeText(GroupView_Activity.this, "Success", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
+//                    for(int i=0; i<userGroupArrayList.size(); i++){
+//                        if(userGroupArrayList.get(i).getUserid() == userCurrent.getUid()) {
+//                            if (userGroupArrayList.get(i).getGroupid() == group.getId()) {
+//                                groupChatAdapter.setStatus(true);
+//                                groupChatAdapter.notifyDataSetChanged();
+//                                Toast.makeText(GroupView_Activity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }
                     groupChatArrayList.add(new GroupChat(group.getId(), group.getIp(), group.getName()));
                     groupChatAdapter.notifyDataSetChanged();
 //                    for(int i=0; i<userGroupArrayList.size(); i++){
@@ -328,6 +329,7 @@ public class GroupView_Activity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_create_group);
 
         final EditText edtNameGroup = (EditText) dialog.findViewById(R.id.editTextNameGroup);
+        final EditText edtIpGroup = (EditText) dialog.findViewById(R.id.editTextIpGroup);
         Button btnOk = (Button) dialog.findViewById(R.id.buttonOk);
         Button btnCancel = (Button) dialog.findViewById(R.id.buttonCancel);
 
@@ -340,14 +342,15 @@ public class GroupView_Activity extends AppCompatActivity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edtNameGroup.getText().toString().equals("")){
-                    Toast.makeText(GroupView_Activity.this, "your name group be empty", Toast.LENGTH_SHORT).show();
+                if(edtNameGroup.getText().toString().equals("") || edtIpGroup.getText().toString().equals("")){
+                    Toast.makeText(GroupView_Activity.this, "name or ip is empty", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(GroupView_Activity.this, "You created a new group", Toast.LENGTH_SHORT).show();
                     textname = edtNameGroup.getText().toString();
+                    textip = edtIpGroup.getText().toString();
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     groupid = mDatabase.push().getKey();
-                    addNewGroup(groupChatArrayList, textname);
+                    addNewGroup(groupChatArrayList, textname, textip);
                     mDatabase = FirebaseDatabase.getInstance().getReference("user_group_ref");
                     mDatabase.child(groupChat.getId()).setValue(new UserGroup(userCurrent.getUid(), groupChat.getId()));
                 }
@@ -479,8 +482,8 @@ public class GroupView_Activity extends AppCompatActivity {
 //        alert.show();
 //    }
 
-    private void addNewGroup(ArrayList<GroupChat> List,String nameGroup) {
-        groupChat = new GroupChat(groupid, "this is ip", nameGroup);
+    private void addNewGroup(ArrayList<GroupChat> List,String nameGroup, String ip) {
+        groupChat = new GroupChat(groupid, ip, nameGroup);
         List.add(groupChat);
         mDatabase = FirebaseDatabase.getInstance().getReference("groups");
         mDatabase.child(groupid).setValue(groupChat);

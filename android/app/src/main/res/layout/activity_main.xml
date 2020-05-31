@@ -30,7 +30,7 @@
         android:weightSum="10">
         <View
             android:layout_weight="2"
-            android:layout_width="30dp"
+            android:layout_width="27dp"
             android:layout_height="30dp"/>
         <TextView
             android:id="@+id/textviewSignin"
@@ -43,7 +43,7 @@
             android:background="@drawable/rectangle_2"/>
         <View
             android:layout_weight="2"
-            android:layout_width="30dp"
+            android:layout_width="27dp"
             android:layout_height="30dp"/>
         <TextView
             android:id="@+id/textviewSignup"
@@ -54,10 +54,11 @@
             android:textSize="18sp"
             android:gravity="center_horizontal|center_vertical"
             android:background="@drawable/rectangle_1"/>
+
         <View
-            android:layout_weight="2"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
+            android:layout_width="31dp"
+            android:layout_height="30dp"
+            android:layout_weight="2" />
     </LinearLayout>
 
 
