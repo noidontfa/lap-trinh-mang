@@ -139,7 +139,7 @@ public class GroupView_Activity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                        Intent intent = new Intent(GroupView_Activity.this, ConversationActivity.class);
-                       intent.putExtra("GROUP_IP", group.getIp());
+                       intent.putExtra("GROUP_IP", groupChatArrayList.get(position).getIp());
                        intent.putExtra("USER_ID", userCurrent.getUid());
                        intent.putExtra("USER_NAME", userCurrent.getEmail());
                        startActivity(intent);
