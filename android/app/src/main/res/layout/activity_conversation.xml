@@ -25,7 +25,8 @@
             android:id="@+id/main_btn_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher_round"/>
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_image_black_24dp"/>
         <EditText
             android:id="@+id/main_txt"
             android:layout_width="wrap_content"

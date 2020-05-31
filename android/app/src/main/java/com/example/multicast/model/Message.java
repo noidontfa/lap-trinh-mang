@@ -1,14 +1,16 @@
-package com.example.multicast;
+package com.example.multicast.model;
 
 import java.io.Serializable;
 
 public class Message implements Serializable {
     private String id="";
+    private String name="";
     private String message="";
     private byte[] image;
 
-    public Message(String id, String message, byte[] image) {
+    public Message(String id, String name, String message, byte[] image) {
         this.id = id;
+        this.name = name;
         this.message = message;
         this.image = image;
     }
@@ -35,5 +37,13 @@ public class Message implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

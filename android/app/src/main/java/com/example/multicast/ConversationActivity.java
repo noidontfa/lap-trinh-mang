@@ -26,6 +26,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.multicast.model.GroupModel;
+import com.example.multicast.model.Message;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -52,12 +55,25 @@ public class ConversationActivity extends AppCompatActivity {
     private Button button;
     private ImageButton btnImage;
     private String mId="me";
+    private String mName="name";
     private byte[] image=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
+        Intent intent = getIntent();
+        String groupIp = intent.getStringExtra("GROUP_IP");
+        String name = intent.getStringExtra("USER_NAME");
+        String uid = intent.getStringExtra("USER_ID");
+        this.INET_ADDR = groupIp;
+        this.mName = name;
+        this.mId = uid;
+        Log.d(TAG, "onCreate: " +groupIp);
+        Log.d(TAG, "onCreate: " + name);
+        Log.d(TAG, "onCreate: " + uid);
+
+
         runThread();
 
         WifiManager wifi = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -112,10 +128,13 @@ public class ConversationActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View view) {
                 image=null;
-                btnImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_foreground));
-                return false;
+                btnImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_black_24dp));
+                return true;
             }
         });
+
+
+        Log.d("TAG", "onCreate: ");
     }
 
     @Override
@@ -150,7 +169,7 @@ public class ConversationActivity extends AppCompatActivity {
                         InetAddress group = InetAddress.getByName(INET_ADDR);
                         MulticastSocket s = new MulticastSocket(PORT);
                         s.joinGroup(group);
-                        Message message = new Message(mId,edt.getText().toString(),image);
+                        Message message = new Message(mId,mName,edt.getText().toString(),image);
                         ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         ObjectOutputStream out = null;
                         try {
