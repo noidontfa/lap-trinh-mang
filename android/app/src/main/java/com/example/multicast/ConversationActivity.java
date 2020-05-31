@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.multicast.model.GroupModel;
+import com.example.multicast.model.Message;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -54,6 +55,7 @@ public class ConversationActivity extends AppCompatActivity {
     private Button button;
     private ImageButton btnImage;
     private String mId="me";
+    private String mName="name";
     private byte[] image=null;
 
     @Override
@@ -64,6 +66,7 @@ public class ConversationActivity extends AppCompatActivity {
         GroupModel groupModel = (GroupModel) intent.getParcelableExtra("data");
         this.INET_ADDR = groupModel.ip;
         this.mId = groupModel.id;
+
         runThread();
 
         WifiManager wifi = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -119,7 +122,7 @@ public class ConversationActivity extends AppCompatActivity {
             public boolean onLongClick(View view) {
                 image=null;
                 btnImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_foreground));
-                return false;
+                return true;
             }
         });
 
@@ -159,7 +162,7 @@ public class ConversationActivity extends AppCompatActivity {
                         InetAddress group = InetAddress.getByName(INET_ADDR);
                         MulticastSocket s = new MulticastSocket(PORT);
                         s.joinGroup(group);
-                        Message message = new Message(mId,edt.getText().toString(),image);
+                        Message message = new Message(mId,mName,edt.getText().toString(),image);
                         ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         ObjectOutputStream out = null;
                         try {

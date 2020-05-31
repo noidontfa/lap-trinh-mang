@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.multicast.model.Message;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -66,7 +68,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.RecylerViewHol
             holder.layoutReceiver.setVisibility(View.VISIBLE);
             holder.layoutSender.setVisibility(View.GONE);
             holder.txtReceiverName.setVisibility(View.VISIBLE);
-            holder.txtReceiverName.setText(message.getId());
+            holder.txtReceiverName.setText(message.getName());
             if(message.getImage() != null) {
                 holder.btnSave.setVisibility(View.VISIBLE);
                 holder.imgReceiver.setVisibility(View.VISIBLE);

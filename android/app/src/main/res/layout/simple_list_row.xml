@@ -45,6 +45,7 @@
             app:layout_constraintLeft_toRightOf="@+id/main_img_receiver"
             app:layout_constraintBottom_toBottomOf="@+id/main_img_receiver"
 
+            android:src="@drawable/ic_arrow_downward_black_24dp"
             android:visibility="gone"
             android:layout_marginLeft="8dp" />
         <TextView
