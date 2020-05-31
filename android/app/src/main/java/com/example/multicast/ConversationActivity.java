@@ -121,7 +121,7 @@ public class ConversationActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View view) {
                 image=null;
-                btnImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_foreground));
+                btnImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_black_24dp));
                 return true;
             }
         });
