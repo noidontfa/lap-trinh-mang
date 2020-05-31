@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        btnSignin = (View) findViewById(R.id.viewLogin);
-        btnSignUp = (View) findViewById(R.id.viewRegister);
+        btnSignin = (View) findViewById(R.id.textviewSignin);
+        btnSignUp = (View) findViewById(R.id.textviewSignup);
 
         btnSignin.setOnClickListener(new View.OnClickListener() {
             @Override
