@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -88,6 +89,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.RecylerViewHol
                                 fOut.flush(); // Not really required
                                 fOut.close(); // do not forget to close the stream
                                 MediaStore.Images.Media.insertImage(context.getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
+                                Toast.makeText(context,"Complete",Toast.LENGTH_SHORT).show();
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
